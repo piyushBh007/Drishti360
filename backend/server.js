@@ -701,7 +701,6 @@ app.post('/api/inspections', async (req, res) => {
   const inspections = readJsonFile('inspections.json');
 
   const now = new Date();
-  const newId = `INSP-${maxNum + 1}`;
 
   const newInspection = {
     id: newId,
