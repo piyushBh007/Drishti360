@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+.venv/
+
+# Secrets
+.env
+*.env
+
+# YOLO cache
+runs/
+*.cache
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

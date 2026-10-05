@@ -1,0 +1,21 @@
+# Node
+node_modules/
+npm-debug.log*
+
+# Secrets — NEVER commit these
+.env
+*.env
+
+# Local data (JSON fallback — not for production)
+# data/*.json  — Keep these for local dev seeding
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Media uploads (ephemeral on Render)
+media/uploads/

@@ -1,0 +1,174 @@
+[
+  {
+    "id": "ngo-001",
+    "name": "Sunrise Welfare Foundation",
+    "ngoName": "Sunrise Welfare Foundation",
+    "registrationNo": "RJ-2020-1142",
+    "category": "Child Welfare",
+    "establishedYear": 2018,
+    "beneficiaries": 120,
+    "description": "Works for child education and community development in rural Rajasthan.",
+    "image": "ngo-001.png",
+    "images": [
+      "ngo-001.png"
+    ],
+    "status": "ACTIVE",
+    "location": {
+      "latitude": 26.2389,
+      "longitude": 73.0243,
+      "city": "Jodhpur",
+      "state": "Rajasthan",
+      "address": "Sector 4, Shastri Nagar, Jodhpur"
+    },
+    "riskScore": {
+      "score": 87,
+      "level": "HIGH",
+      "factors": [
+        { "title": "CCTV instability", "scoreContribution": 22, "description": "Repeated stream disconnects during operational hours" },
+        { "title": "Attendance anomaly", "scoreContribution": 18, "description": "Discrepancy between biometric log and physical count" },
+        { "title": "Network interruptions", "scoreContribution": 17, "description": "Router power toggled 14 times in 24 hours" }
+      ],
+      "trend": "INCREASING (+12%)"
+    },
+    "cctvOnlineCount": 2,
+    "cctvTotalCount": 3,
+    "attendanceRate": 62,
+    "networkUptime": 71,
+    "lastInspectionDate": "2026-08-14",
+    "activeAlertsCount": 3
+  },
+  {
+    "id": "ngo-002",
+    "name": "Asha Child Care Centre",
+    "ngoName": "Asha Child Care Centre",
+    "registrationNo": "RJ-2019-8821",
+    "category": "Child Healthcare & Shelter",
+    "establishedYear": 2016,
+    "beneficiaries": 95,
+    "description": "Provides nutritional support and primary medical care for underprivileged orphans.",
+    "image": "ngo-002.png",
+    "images": [
+      "ngo-002.png"
+    ],
+    "status": "ACTIVE",
+    "location": {
+      "latitude": 26.9124,
+      "longitude": 75.7873,
+      "city": "Jaipur",
+      "state": "Rajasthan",
+      "address": "Plot 12, Malviya Nagar, Jaipur"
+    },
+    "riskScore": {
+      "score": 79,
+      "level": "HIGH",
+      "factors": [
+        { "title": "Attendance anomaly", "scoreContribution": 30, "description": "Low beneficiary presence during meal distribution" },
+        { "title": "CCTV instability", "scoreContribution": 25, "description": "Camera 2 offline for over 6 hours" }
+      ],
+      "trend": "STABLE"
+    },
+    "cctvOnlineCount": 1,
+    "cctvTotalCount": 4,
+    "attendanceRate": 54,
+    "networkUptime": 82,
+    "lastInspectionDate": "2026-07-29",
+    "activeAlertsCount": 2
+  },
+  {
+    "id": "ngo-003",
+    "name": "Shakti Foundation",
+    "ngoName": "Shakti Foundation",
+    "registrationNo": "RJ-2021-4430",
+    "category": "Women Empowerment & Vocational",
+    "establishedYear": 2020,
+    "beneficiaries": 180,
+    "description": "Empowers rural women through handicraft skill training and self-help group creation.",
+    "image": "ngo-003.jpg",
+    "status": "ACTIVE",
+    "location": {
+      "latitude": 24.5854,
+      "longitude": 73.7125,
+      "city": "Udaipur",
+      "state": "Rajasthan",
+      "address": "Lake Road, Hiran Magri, Udaipur"
+    },
+    "riskScore": {
+      "score": 62,
+      "level": "MEDIUM",
+      "factors": [
+        { "title": "Network interruptions", "scoreContribution": 30, "description": "Intermittent Wi-Fi dropping" }
+      ],
+      "trend": "STABLE"
+    },
+    "cctvOnlineCount": 0,
+    "cctvTotalCount": 3,
+    "attendanceRate": 88,
+    "networkUptime": 65,
+    "lastInspectionDate": "2026-09-01",
+    "activeAlertsCount": 1
+  },
+  {
+    "id": "ngo-004",
+    "name": "Samarpan Trust for Women",
+    "ngoName": "Samarpan Trust for Women",
+    "registrationNo": "RJ-2017-3021",
+    "category": "Maternal Healthcare",
+    "establishedYear": 2017,
+    "beneficiaries": 140,
+    "description": "Focuses on maternal health checkups and clean drinking water access in southern Rajasthan.",
+    "image": "ngo-004.jpg",
+    "status": "ACTIVE",
+    "location": {
+      "latitude": 24.5854,
+      "longitude": 73.7125,
+      "city": "Udaipur",
+      "state": "Rajasthan",
+      "address": "Sector 3, Hiran Magri, Udaipur"
+    },
+    "riskScore": {
+      "score": 42,
+      "level": "MEDIUM",
+      "factors": [
+        { "title": "Documentation update", "scoreContribution": 20, "description": "Pending annual renewal" }
+      ],
+      "trend": "DECREASING"
+    },
+    "cctvOnlineCount": 4,
+    "cctvTotalCount": 4,
+    "attendanceRate": 88,
+    "networkUptime": 91,
+    "lastInspectionDate": "2026-09-01",
+    "activeAlertsCount": 1
+  },
+  {
+    "id": "ngo-005",
+    "name": "Navjeevan Skill Academy",
+    "ngoName": "Navjeevan Skill Academy",
+    "registrationNo": "DL-2022-9011",
+    "category": "Youth Skill Development",
+    "establishedYear": 2022,
+    "beneficiaries": 310,
+    "description": "Provides IT and digital literacy certification courses for underprivileged youth.",
+    "image": "ngo-005.jpg",
+    "status": "ACTIVE",
+    "location": {
+      "latitude": 28.6139,
+      "longitude": 77.2090,
+      "city": "New Delhi",
+      "state": "Delhi",
+      "address": "Block C, Okhla Phase III, New Delhi"
+    },
+    "riskScore": {
+      "score": 18,
+      "level": "LOW",
+      "factors": [],
+      "trend": "STABLE"
+    },
+    "cctvOnlineCount": 6,
+    "cctvTotalCount": 6,
+    "attendanceRate": 96,
+    "networkUptime": 99,
+    "lastInspectionDate": "2026-09-10",
+    "activeAlertsCount": 0
+  }
+]

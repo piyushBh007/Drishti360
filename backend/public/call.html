@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drishti360 Inspection Call - Remote Participant</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #0f172a;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background-color: #1e293b;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #3b82f6;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .status-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background-color: #475569;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .status-badge.connected {
+      background-color: #16a34a;
+    }
+    .status-badge.connecting {
+      background-color: #d97706;
+    }
+    .status-badge.ended {
+      background-color: #dc2626;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .setup-panel {
+      background-color: #1e293b;
+      padding: 1.25rem;
+      border-radius: 0.75rem;
+      border: 1px solid #334155;
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    label {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+    input[type="text"] {
+      background-color: #0f172a;
+      border: 1px solid #475569;
+      color: #ffffff;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      outline: none;
+    }
+    input[type="text"]:focus {
+      border-color: #3b82f6;
+    }
+    button {
+      padding: 0.5rem 1.25rem;
+      border-radius: 0.375rem;
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background-color: #2563eb;
+      color: #ffffff;
+    }
+    .btn-primary:hover {
+      background-color: #1d4ed8;
+    }
+    .btn-danger {
+      background-color: #dc2626;
+      color: #ffffff;
+    }
+    .btn-danger:hover {
+      background-color: #b91c1c;
+    }
+    .btn-secondary {
+      background-color: #334155;
+      color: #f8fafc;
+    }
+    .btn-secondary:hover {
+      background-color: #475569;
+    }
+
+    .video-grid {
+      position: relative;
+      flex: 1;
+      min-height: 420px;
+      background-color: #020617;
+      border-radius: 0.75rem;
+      border: 1px solid #334155;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    video#remoteVideo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background-color: #000;
+    }
+    .local-preview-container {
+      position: absolute;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 200px;
+      height: 150px;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      border: 2px solid #3b82f6;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+      background-color: #1e293b;
+    }
+    video#localVideo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1);
+    }
+    .video-placeholder {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      color: #64748b;
+    }
+
+    .controls-bar {
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .ctrl-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      background-color: #1e293b;
+      border: 1px solid #334155;
+      color: #ffffff;
+      cursor: pointer;
+    }
+    .ctrl-btn.active-off {
+      background-color: #dc2626;
+      border-color: #dc2626;
+    }
+    .ctrl-btn.hangup {
+      background-color: #dc2626;
+      border-color: #dc2626;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      Drishti360 Inspection Call
+    </div>
+    <div id="statusBadge" class="status-badge">IDLE</div>
+  </header>
+
+  <main>
+    <div class="setup-panel">
+      <div class="form-group">
+        <label for="inspectionIdInput">Inspection Room ID</label>
+        <input type="text" id="inspectionIdInput" value="inspection-2026-001" placeholder="e.g. inspection-2026-001">
+      </div>
+      <div class="form-group">
+        <label for="participantNameInput">Your Name / Role</label>
+        <input type="text" id="participantNameInput" value="NGO Field Representative" placeholder="Field Rep">
+      </div>
+      <div style="margin-top: auto;">
+        <button id="joinBtn" class="btn-primary" onclick="startCall()">Join Inspection Call</button>
+        <button id="leaveBtn" class="btn-danger" onclick="endCall()" style="display: none;">Leave Call</button>
+      </div>
+    </div>
+
+    <div class="video-grid">
+      <div id="remotePlaceholder" class="video-placeholder">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 10l5-3v10l-5-3v-4z"/><rect x="2" y="6" width="13" height="12" rx="2"/></svg>
+        <span id="placeholderText">Waiting to join call...</span>
+      </div>
+
+      <video id="remoteVideo" autoplay playsinline></video>
+
+      <div class="local-preview-container">
+        <video id="localVideo" autoplay playsinline muted></video>
+      </div>
+    </div>
+
+    <div class="controls-bar">
+      <button id="muteMicBtn" class="ctrl-btn" onclick="toggleMuteMic()" title="Mute Microphone">🎤</button>
+      <button id="toggleCamBtn" class="ctrl-btn" onclick="toggleCam()" title="Disable Camera">📹</button>
+      <button id="hangupBtn" class="ctrl-btn hangup" onclick="endCall()" title="End Call">📞</button>
+    </div>
+  </main>
+
+  <script>
+    let localStream = null;
+    let peerConnection = null;
+    let ws = null;
+    let inspectionId = "";
+    let participantId = "remote-browser-" + Math.floor(Math.random() * 1000);
+
+    const rtcConfig = {
+      iceServers: [
+        { urls: "stun:stun.l.google.com:19302" }
+      ]
+    };
+
+    const statusBadge = document.getElementById("statusBadge");
+    const placeholderText = document.getElementById("placeholderText");
+    const remoteVideo = document.getElementById("remoteVideo");
+    const localVideo = document.getElementById("localVideo");
+    const joinBtn = document.getElementById("joinBtn");
+    const leaveBtn = document.getElementById("leaveBtn");
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const roomParam = urlParams.get("inspectionId") || urlParams.get("room");
+      if (roomParam) {
+        document.getElementById("inspectionIdInput").value = roomParam;
+      }
+      // Auto-join when launched with ?autoJoin=1
+      if (urlParams.get("autoJoin") === "1" && roomParam) {
+        setTimeout(() => startCall(), 500);
+      }
+    });
+
+    let queuedCandidates = [];
+
+    function setStatus(text, stateClass) {
+      statusBadge.innerText = text;
+      statusBadge.className = "status-badge " + (stateClass || "");
+    }
+
+    async function startCall() {
+      inspectionId = document.getElementById("inspectionIdInput").value.trim();
+      if (!inspectionId) {
+        alert("Please enter a valid Inspection Room ID");
+        return;
+      }
+
+      setStatus("CONNECTING...", "connecting");
+      joinBtn.style.display = "none";
+      leaveBtn.style.display = "inline-block";
+
+      try {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          throw new Error("Secure Context Required (HTTPS / localhost). Browsers block media devices on insecure HTTP origins (e.g. http://192.168.x.x:3000). For local LAN testing, enable Chrome flag: chrome://flags/#unsafely-treat-insecure-origin-as-secure for http://192.168.29.89:3000, or open on localhost.");
+        }
+        // Request actual camera and microphone access
+        localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        localVideo.srcObject = localStream;
+      } catch (err) {
+        alert("Camera/Microphone error: " + err.message);
+        setStatus("PERMISSION DENIED", "ended");
+        joinBtn.style.display = "inline-block";
+        leaveBtn.style.display = "none";
+        return;
+      }
+
+      // Connect WebSocket signaling server
+      const protocol = location.protocol === "https:" ? "wss:" : "ws:";
+      const host = location.host || "localhost:3000";
+      const wsUrl = `${protocol}//${host}/ws`;
+
+      ws = new WebSocket(wsUrl);
+
+      ws.onopen = () => {
+        console.log("WebSocket connected. Joining room:", inspectionId);
+        ws.send(JSON.stringify({
+          type: "join",
+          inspectionId: inspectionId,
+          participantId: participantId,
+          role: "remote-participant"
+        }));
+        placeholderText.innerText = "Waiting for Inspector to join...";
+      };
+
+      ws.onmessage = async (event) => {
+        const msg = JSON.parse(event.data);
+        console.log("Signaling message received:", msg.type, msg);
+
+        switch (msg.type) {
+          case "joined":
+            console.log("Joined room successfully. Participants in room:", msg.participantCount);
+            if (msg.participantCount > 1) {
+              placeholderText.innerText = "Inspector present. Connecting WebRTC...";
+              createPeerConnection();
+            }
+            break;
+
+          case "participant-joined":
+            placeholderText.innerText = "Inspector joined. Connecting WebRTC...";
+            createPeerConnection();
+            break;
+
+          case "offer": {
+            createPeerConnection();
+            const rawSdp = msg.sdp;
+            const desc = (typeof rawSdp === "string") ? { type: "offer", sdp: rawSdp } : rawSdp;
+            console.log("Setting remote offer description");
+            await peerConnection.setRemoteDescription(new RTCSessionDescription(desc));
+            drainQueuedCandidates();
+            const answer = await peerConnection.createAnswer();
+            await peerConnection.setLocalDescription(answer);
+            console.log("Sending answer to signaling server");
+            ws.send(JSON.stringify({
+              type: "answer",
+              inspectionId: inspectionId,
+              participantId: participantId,
+              sdp: answer
+            }));
+            break;
+          }
+
+          case "answer": {
+            if (peerConnection) {
+              const rawSdp = msg.sdp;
+              const desc = (typeof rawSdp === "string") ? { type: "answer", sdp: rawSdp } : rawSdp;
+              console.log("Setting remote answer description");
+              await peerConnection.setRemoteDescription(new RTCSessionDescription(desc));
+              drainQueuedCandidates();
+            }
+            break;
+          }
+
+          case "ice-candidate": {
+            if (msg.candidate) {
+              const cand = (typeof msg.candidate === "string") ? { candidate: msg.candidate } : msg.candidate;
+              if (peerConnection && peerConnection.remoteDescription && peerConnection.remoteDescription.type) {
+                try {
+                  await peerConnection.addIceCandidate(new RTCIceCandidate(cand));
+                } catch (e) {
+                  console.warn("Error adding ICE candidate:", e);
+                }
+              } else {
+                console.log("Queuing ICE candidate (waiting for remote description)");
+                queuedCandidates.push(cand);
+              }
+            }
+            break;
+          }
+
+          case "participant-left":
+            setStatus("INSPECTOR LEFT", "ended");
+            placeholderText.innerText = "Inspector left the call.";
+            closePeerConnection();
+            break;
+        }
+      };
+
+      ws.onerror = (err) => {
+        console.error("WebSocket error:", err);
+        setStatus("SIGNALING ERROR", "ended");
+      };
+
+      ws.onclose = () => {
+        console.log("WebSocket closed.");
+      };
+    }
+
+    async function drainQueuedCandidates() {
+      if (!peerConnection) return;
+      console.log("Draining queued ICE candidates:", queuedCandidates.length);
+      for (const cand of queuedCandidates) {
+        try {
+          await peerConnection.addIceCandidate(new RTCIceCandidate(cand));
+        } catch (e) {
+          console.warn("Error adding queued ICE candidate:", e);
+        }
+      }
+      queuedCandidates = [];
+    }
+
+    function createPeerConnection() {
+      if (peerConnection) return;
+
+      console.log("Creating RTCPeerConnection with STUN server");
+      peerConnection = new RTCPeerConnection(rtcConfig);
+
+      // Add local media tracks to connection
+      if (localStream) {
+        localStream.getTracks().forEach(track => {
+          peerConnection.addTrack(track, localStream);
+        });
+      }
+
+      // Receive remote stream
+      peerConnection.ontrack = (event) => {
+        console.log("Received remote track:", event.streams[0]);
+        if (event.streams && event.streams[0]) {
+          remoteVideo.srcObject = event.streams[0];
+        } else {
+          let inboundStream = new MediaStream();
+          inboundStream.addTrack(event.track);
+          remoteVideo.srcObject = inboundStream;
+        }
+        document.getElementById("remotePlaceholder").style.display = "none";
+        setStatus("CONNECTED", "connected");
+      };
+
+      // Send local ICE candidates to signaling server
+      peerConnection.onicecandidate = (event) => {
+        if (event.candidate && ws && ws.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify({
+            type: "ice-candidate",
+            inspectionId: inspectionId,
+            participantId: participantId,
+            candidate: event.candidate
+          }));
+        }
+      };
+
+      peerConnection.onconnectionstatechange = () => {
+        console.log("Peer connection state:", peerConnection.connectionState);
+        if (peerConnection.connectionState === "connected") {
+          setStatus("CONNECTED", "connected");
+        } else if (peerConnection.connectionState === "disconnected" || peerConnection.connectionState === "failed") {
+          setStatus("RECONNECTING...", "connecting");
+        }
+      };
+    }
+
+    async function sendOffer() {
+      if (!peerConnection) return;
+      const offer = await peerConnection.createOffer();
+      await peerConnection.setLocalDescription(offer);
+      ws.send(JSON.stringify({
+        type: "offer",
+        inspectionId: inspectionId,
+        sdp: offer
+      }));
+    }
+
+    function closePeerConnection() {
+      if (peerConnection) {
+        peerConnection.close();
+        peerConnection = null;
+      }
+      if (remoteVideo.srcObject) {
+        remoteVideo.srcObject = null;
+      }
+      document.getElementById("remotePlaceholder").style.display = "flex";
+    }
+
+    function endCall() {
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({
+          type: "leave",
+          inspectionId: inspectionId
+        }));
+        ws.close();
+      }
+      closePeerConnection();
+      if (localStream) {
+        localStream.getTracks().forEach(track => track.stop());
+        localStream = null;
+        localVideo.srcObject = null;
+      }
+      setStatus("ENDED", "ended");
+      joinBtn.style.display = "inline-block";
+      leaveBtn.style.display = "none";
+      placeholderText.innerText = "Call ended.";
+    }
+
+    let isAudioMuted = false;
+    function toggleMuteMic() {
+      if (!localStream) return;
+      isAudioMuted = !isAudioMuted;
+      localStream.getAudioTracks().forEach(t => t.enabled = !isAudioMuted);
+      const btn = document.getElementById("muteMicBtn");
+      btn.innerText = isAudioMuted ? "🔇" : "🎤";
+      btn.className = "ctrl-btn " + (isAudioMuted ? "active-off" : "");
+    }
+
+    let isVideoOff = false;
+    function toggleCam() {
+      if (!localStream) return;
+      isVideoOff = !isVideoOff;
+      localStream.getVideoTracks().forEach(t => t.enabled = !isVideoOff);
+      const btn = document.getElementById("toggleCamBtn");
+      btn.innerText = isVideoOff ? "📷" : "📹";
+      btn.className = "ctrl-btn " + (isVideoOff ? "active-off" : "");
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ALT-901",
+    "ngoId": "ngo-001",
+    "ngoName": "Sunrise Welfare Foundation",
+    "type": "CCTV_DISCONNECT",
+    "title": "Camera Feed Interrupted",
+    "description": "Camera 03 stream lost for > 15 minutes",
+    "severity": "HIGH",
+    "timestamp": "2026-09-20T18:45:00.000Z",
+    "status": "OPEN"
+  },
+  {
+    "id": "ALT-902",
+    "ngoId": "ngo-001",
+    "ngoName": "Sunrise Welfare Foundation",
+    "type": "ATTENDANCE_MISMATCH",
+    "title": "Biometric Mismatch",
+    "description": "Physical headcount (14) does not match register (35)",
+    "severity": "HIGH",
+    "timestamp": "2026-09-20T14:20:00.000Z",
+    "status": "OPEN"
+  },
+  {
+    "id": "ALT-903",
+    "ngoId": "ngo-002",
+    "ngoName": "Asha Child Care Centre",
+    "type": "GEO_FENCE_BREACH",
+    "title": "Location Anomaly",
+    "description": "Mobile app pinged outside designated center radius",
+    "severity": "MEDIUM",
+    "timestamp": "2026-09-19T11:10:00.000Z",
+    "status": "UNDER_REVIEW"
+  },
+  {
+    "id": "ALT-904",
+    "ngoId": "ngo-003",
+    "ngoName": "Shakti Foundation",
+    "type": "NETWORK_OFFLINE",
+    "title": "Router Offline",
+    "description": "Gateway offline for 42 minutes",
+    "severity": "LOW",
+    "timestamp": "2026-09-18T09:00:00.000Z",
+    "status": "RESOLVED"
+  }
+]

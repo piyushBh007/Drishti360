@@ -1,0 +1,75 @@
+# =============================================================================
+# Drishti360 — Render Deployment Configuration (render.yaml)
+# =============================================================================
+# This file configures both the Node.js backend and the Python ML service
+# for deployment on Render (https://render.com).
+#
+# HOW TO DEPLOY:
+#   1. Push this repo to GitHub.
+#   2. On Render Dashboard → New → Blueprint → connect your GitHub repo.
+#   3. Render will detect this render.yaml and create both services automatically.
+#   4. Set the required secret environment variables in each service's
+#      "Environment" tab on the Render Dashboard (see comments below).
+# =============================================================================
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # 1. Node.js / Express Backend
+  # ---------------------------------------------------------------------------
+  - type: web
+    name: drishti360-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free
+    healthCheckPath: /health
+
+    envVars:
+      # PORT is automatically injected by Render — do not set it here.
+
+      # REQUIRED: Set in Render Dashboard → Environment (never commit real values).
+      - key: DATABASE_URL
+        sync: false            # Marks as secret — you must paste the value on Render.
+      - key: JWT_SECRET
+        sync: false            # Generate: node -e "require('crypto').randomBytes(64).toString('hex')"
+
+      # Set to the ML service's Render URL after deploying drishti360-ml.
+      - key: ML_SERVICE_URL
+        value: https://drishti360-ml.onrender.com   # Update after ML service is deployed.
+
+      # CORS: leave empty for Android native clients (they don't send Origin header).
+      # Add your web dashboard URL here if you deploy one.
+      - key: CORS_ORIGIN
+        value: ""
+
+      # Optional: RTSP stream URL for a real IP camera.
+      # - key: RTSP_STREAM_URL
+      #   sync: false
+
+  # ---------------------------------------------------------------------------
+  # 2. Python / Flask ML Service (YOLO + XGBoost)
+  # ---------------------------------------------------------------------------
+  - type: web
+    name: drishti360-ml
+    runtime: python
+    rootDir: ml-service
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --timeout 120 --workers 1
+    plan: free
+    healthCheckPath: /health
+
+    envVars:
+      # PORT is automatically injected by Render.
+
+      - key: YOLO_MODEL
+        value: yolov8n.pt
+      - key: YOLO_CONFIDENCE
+        value: "0.25"
+      - key: YOLO_INFERENCE_FPS
+        value: "3"
+
+      # Set to the backend Render URL after deploying drishti360-backend.
+      - key: BACKEND_URL
+        value: https://drishti360-backend.onrender.com   # Update after backend is deployed.

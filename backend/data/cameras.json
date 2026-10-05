@@ -1,0 +1,35 @@
+[
+  {
+    "cameraId": "camera-001",
+    "ngoId": "ngo-001",
+    "cameraName": "Cam 01",
+    "status": "ONLINE",
+    "source": "LOCAL_VIDEO",
+    "type": "LOCAL_DEMO",
+    "protocol": "LOCAL_FILE",
+    "streamUrl": null,
+    "media": "cctv_demo.mp4"
+  },
+  {
+    "cameraId": "camera-002",
+    "ngoId": "ngo-001",
+    "cameraName": "Cam 02",
+    "status": "ONLINE",
+    "source": "LOCAL_VIDEO",
+    "type": "LOCAL_DEMO",
+    "protocol": "LOCAL_FILE",
+    "streamUrl": null,
+    "media": "cctv_demo_2.mp4"
+  },
+  {
+    "cameraId": "camera-003",
+    "ngoId": "ngo-001",
+    "cameraName": "Cam 03",
+    "status": "OFFLINE",
+    "source": "RTSP",
+    "type": "IP_CAMERA",
+    "protocol": "RTSP",
+    "streamUrl": null,
+    "media": null
+  }
+]

@@ -1,0 +1,50 @@
+# =============================================================================
+# Drishti360 — Root .gitignore
+# =============================================================================
+
+# Gradle & Build artifacts
+.gradle/
+build/
+app/build/
+*.apk
+*.aab
+
+# Local development properties (contains local IPs, API keys, passwords)
+local.properties
+local.properties.*
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.jks
+*.keystore
+
+# Node & dependencies
+node_modules/
+npm-debug.log*
+
+# Python & ML artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.venv/
+.pytest_cache/
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# IDE & Editor files
+.idea/
+*.iml
+.vscode/
+
+# Ephemeral runtime data & logs
+logs/
+*.log
+backend/media/uploads/
